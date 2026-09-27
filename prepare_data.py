@@ -2,6 +2,7 @@ import csv
 import math
 from pathlib import Path
 import re
+from typing import Sequence
 
 
 DATA_DIR = Path(__file__).parent / "data"
@@ -28,6 +29,28 @@ def load_labeled_files(data_dir: Path = DATA_DIR) -> list[tuple[Path, str]]:
     return labeled_files
 
 
+def normalize_landmarks(
+    landmarks: Sequence[tuple[float, float, float]],
+    handedness: str,
+) -> list[float]:
+    """Return classifier features from 21 hand landmarks."""
+    if len(landmarks) != 21:
+        raise ValueError("expected exactly 21 hand landmarks")
+
+    wrist = landmarks[0]
+    scale = math.dist(wrist, landmarks[9])
+    if scale == 0:
+        raise ValueError("cannot normalize landmarks with zero scale")
+
+    features = [1.0 if handedness.lower() == "right" else 0.0]
+    for landmark in landmarks[1:]:
+        features.extend(
+            (coordinate - wrist_coordinate) / scale
+            for coordinate, wrist_coordinate in zip(landmark, wrist)
+        )
+    return features
+
+
 def prepare_data(data_dir: Path = DATA_DIR) -> list[list[str | float]]:
     """Return normalized, labeled landmark rows ready for CSV output."""
     prepared_rows = []
@@ -45,17 +68,12 @@ def prepare_data(data_dir: Path = DATA_DIR) -> list[list[str | float]]:
             if len(landmarks) != 21:
                 continue
 
-            wrist = landmarks[0]
-            scale = math.dist(wrist, landmarks[9])
-            if scale == 0:
+            try:
+                features = normalize_landmarks(landmarks, hand_match.group(1))
+            except ValueError:
                 continue
 
-            row: list[str | float] = [label, hand_match.group(1)]
-            for landmark in landmarks[1:]:
-                row.extend(
-                    (coordinate - wrist_coordinate) / scale
-                    for coordinate, wrist_coordinate in zip(landmark, wrist)
-                )
+            row: list[str | float] = [label, hand_match.group(1), *features[1:]]
             prepared_rows.append(row)
 
     return prepared_rows
