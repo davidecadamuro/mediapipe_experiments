@@ -3,6 +3,10 @@
 /logs
 /data
 /models
+/fonts
+*.mov
+leaderboard.csv
+
 
 
 # Byte-compiled / optimized / DLL files
@@ -225,3 +229,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Mac stuff
+.DS_Store
