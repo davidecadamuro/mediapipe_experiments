@@ -1,7 +1,4 @@
-<video controls width="720">
-	<source src="demo_good.mov" type="video/quicktime">
-	Your browser does not support the video tag.
-</video>
+[Watch the Hare Hunter demo](demo_good.mov)
 
 # Hare Hunter
 
