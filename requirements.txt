@@ -1,3 +1,4 @@
 mediapipe==1.0.0
 opencv-python==5.0.0.93
 scikit-learn==1.9.1
+Pillow==12.3.0
