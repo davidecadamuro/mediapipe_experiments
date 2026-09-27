@@ -1,3 +1,8 @@
+<video controls width="720">
+	<source src="demo_good.mov" type="video/quicktime">
+	Your browser does not support the video tag.
+</video>
+
 # Hare Hunter
 
 Hare Hunter is a small learning project for exploring how MediaPipe detects hand landmarks and how those landmarks can be used with machine learning for gesture recognition.
