@@ -1,5 +1,3 @@
-[Watch the Hare Hunter demo](demo_good.mov)
-
 # Hare Hunter
 
 Hare Hunter is a small learning project for exploring how MediaPipe detects hand landmarks and how those landmarks can be used with machine learning for gesture recognition.
